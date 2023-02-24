@@ -1,6 +1,7 @@
 import React from "react";
 import { Collection } from "./components/Collection";
 import { Navbar } from "./components/Navbar";
+import { Pagination } from "./components/Pagination";
 import "./index.scss";
 
 function App() {
@@ -19,11 +20,7 @@ function App() {
           ]}
         />
       </div>
-      <ul className="pagination">
-        <li>1</li>
-        <li className="active">2</li>
-        <li>3</li>
-      </ul>
+      <Pagination />
     </div>
   );
 }
