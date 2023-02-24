@@ -1,4 +1,3 @@
-import React from "react";
 import { Collection } from "./components/Collection";
 import { Navbar } from "./components/Navbar";
 import { Pagination } from "./components/Pagination";
