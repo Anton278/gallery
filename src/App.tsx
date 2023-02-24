@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.scss";
 
-function Collection({ name, images }) {
+function Collection({ name, images }: any) {
   return (
     <div className="collection">
       <img className="collection__big" src={images[0]} alt="Item" />
