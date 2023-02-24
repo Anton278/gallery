@@ -1,21 +1,13 @@
 import React from "react";
 import { Collection } from "./components/Collection";
+import { Navbar } from "./components/Navbar";
 import "./index.scss";
 
 function App() {
   return (
     <div className="App">
       <h1>Моя коллекція фотографій</h1>
-      <div className="top">
-        <ul className="tags">
-          <li className="active">Всі</li>
-          <li>Гори</li>
-          <li>Море</li>
-          <li>Архітектура</li>
-          <li>Міста</li>
-        </ul>
-        <input className="search-input" placeholder="Пошук по назві" />
-      </div>
+      <Navbar />
       <div className="content">
         <Collection
           name="Подорожі по світу"
