@@ -61,7 +61,7 @@ function App() {
     );
 
     filteredCollections = filteredCollections.filter((collection) =>
-      collection.name.includes(search)
+      collection.name.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilteredCollections(filteredCollections);
@@ -93,13 +93,17 @@ function App() {
         <div>loading...</div>
       ) : (
         <div className="content">
-          {currentCollections.map((collection) => (
-            <Collection
-              name={collection.name}
-              images={collection.photos}
-              key={collection.name}
-            />
-          ))}
+          {currentCollections.length ? (
+            currentCollections.map((collection) => (
+              <Collection
+                name={collection.name}
+                images={collection.photos}
+                key={collection.name}
+              />
+            ))
+          ) : (
+            <p>No data to display</p>
+          )}
         </div>
       )}
       <Pagination
