@@ -7,14 +7,20 @@ type NavbarProps = {
   activeCategory: number;
   setActiveCategory: React.Dispatch<React.SetStateAction<number>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Navbar: FC<NavbarProps> = ({
-  categories,
-  activeCategory,
-  setActiveCategory,
-  setCurrentPage,
-}) => {
+const Navbar: FC<NavbarProps> = (props) => {
+  const {
+    categories,
+    activeCategory,
+    setActiveCategory,
+    setCurrentPage,
+    search,
+    setSearch,
+  } = props;
+
   return (
     <div className={s.top}>
       <ul className={s.tags}>
@@ -34,7 +40,12 @@ const Navbar: FC<NavbarProps> = ({
           );
         })}
       </ul>
-      <input className={s.searchInput} placeholder="Пошук по назві" />
+      <input
+        className={s.searchInput}
+        placeholder="Пошук по назві"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
     </div>
   );
 };
