@@ -6,12 +6,14 @@ type NavbarProps = {
   categories: ICategory[];
   activeCategory: number;
   setActiveCategory: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Navbar: FC<NavbarProps> = ({
   categories,
   activeCategory,
   setActiveCategory,
+  setCurrentPage,
 }) => {
   return (
     <div className={s.top}>
@@ -22,7 +24,10 @@ const Navbar: FC<NavbarProps> = ({
             <li
               key={category.name}
               className={className}
-              onClick={() => setActiveCategory(i)}
+              onClick={() => {
+                setActiveCategory(i);
+                setCurrentPage(1);
+              }}
             >
               {category.name}
             </li>

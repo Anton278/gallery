@@ -8,6 +8,9 @@ import { ICollection } from "./models/ICollection";
 
 function App() {
   const [collections, setCollections] = useState<ICollection[]>([]);
+  const [categoryCollections, setCategoryCollections] = useState<ICollection[]>(
+    []
+  );
   const [currentCollections, setCurrentCollections] = useState<ICollection[]>(
     []
   );
@@ -50,14 +53,22 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setCategoryCollections(
+      collections.filter((collection) =>
+        activeCategory ? collection.category === activeCategory : true
+      )
+    );
+  }, [collections, activeCategory]);
+
+  useEffect(() => {
     const indexOfLastCollection = currentPage * COLLECTIONS_PER_PAGE;
     const indexOfFirstCollection = indexOfLastCollection - COLLECTIONS_PER_PAGE;
-    const currentCollections = collections.slice(
+    const currentCollections = categoryCollections.slice(
       indexOfFirstCollection,
       indexOfLastCollection
     );
     setCurrentCollections(currentCollections);
-  }, [collections, currentPage]);
+  }, [currentPage, categoryCollections]);
 
   return (
     <div className="App">
@@ -66,6 +77,7 @@ function App() {
         categories={categories}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
+        setCurrentPage={setCurrentPage}
       />
       {error ? (
         <div className="error-message">{error}</div>
@@ -73,21 +85,17 @@ function App() {
         <div>loading...</div>
       ) : (
         <div className="content">
-          {currentCollections
-            .filter((collection) =>
-              activeCategory ? collection.category === activeCategory : true
-            )
-            .map((collection) => (
-              <Collection
-                name={collection.name}
-                images={collection.photos}
-                key={collection.name}
-              />
-            ))}
+          {currentCollections.map((collection) => (
+            <Collection
+              name={collection.name}
+              images={collection.photos}
+              key={collection.name}
+            />
+          ))}
         </div>
       )}
       <Pagination
-        collectionsLength={collections.length}
+        collectionsLength={categoryCollections.length}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         collectionsPerPage={COLLECTIONS_PER_PAGE}
