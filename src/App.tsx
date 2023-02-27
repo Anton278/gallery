@@ -8,9 +8,9 @@ import { ICollection } from "./models/ICollection";
 
 function App() {
   const [collections, setCollections] = useState<ICollection[]>([]);
-  const [categoryCollections, setCategoryCollections] = useState<ICollection[]>(
+  const [filteredCollections, setFilteredCollections] = useState<ICollection[]>(
     []
-  );
+  ); // means collections filtered by category or/and search
   const [currentCollections, setCurrentCollections] = useState<ICollection[]>(
     []
   );
@@ -19,6 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
   const COLLECTIONS_PER_PAGE = 3;
 
   useEffect(() => {
@@ -53,22 +54,27 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setCategoryCollections(
-      collections.filter((collection) =>
-        activeCategory ? collection.category === activeCategory : true
-      )
+    let filteredCollections: ICollection[] = [];
+
+    filteredCollections = collections.filter((collection) =>
+      activeCategory ? collection.category === activeCategory : true
     );
-  }, [collections, activeCategory]);
+
+    filteredCollections = filteredCollections.filter((collection) =>
+      collection.name.includes(search)
+    );
+
+    setFilteredCollections(filteredCollections);
+  }, [collections, activeCategory, search]);
 
   useEffect(() => {
     const indexOfLastCollection = currentPage * COLLECTIONS_PER_PAGE;
     const indexOfFirstCollection = indexOfLastCollection - COLLECTIONS_PER_PAGE;
-    const currentCollections = categoryCollections.slice(
-      indexOfFirstCollection,
-      indexOfLastCollection
+
+    setCurrentCollections(
+      filteredCollections.slice(indexOfFirstCollection, indexOfLastCollection)
     );
-    setCurrentCollections(currentCollections);
-  }, [currentPage, categoryCollections]);
+  }, [filteredCollections, currentPage]);
 
   return (
     <div className="App">
@@ -78,6 +84,8 @@ function App() {
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         setCurrentPage={setCurrentPage}
+        search={search}
+        setSearch={setSearch}
       />
       {error ? (
         <div className="error-message">{error}</div>
@@ -95,7 +103,7 @@ function App() {
         </div>
       )}
       <Pagination
-        collectionsLength={categoryCollections.length}
+        collectionsLength={filteredCollections.length}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         collectionsPerPage={COLLECTIONS_PER_PAGE}
