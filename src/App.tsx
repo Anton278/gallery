@@ -40,7 +40,11 @@ function App() {
       ) : (
         <div className="content">
           {collections.map((collection) => (
-            <Collection name={collection.name} images={collection.photos} />
+            <Collection
+              name={collection.name}
+              images={collection.photos}
+              key={collection.name}
+            />
           ))}
         </div>
       )}
