@@ -36,7 +36,7 @@ function App() {
       {isLoading ? (
         <div>loading...</div>
       ) : error ? (
-        <div>{error}</div>
+        <div className="error-message">{error}</div>
       ) : (
         <div className="content">
           {collections.map((collection) => (
