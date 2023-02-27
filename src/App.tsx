@@ -8,10 +8,15 @@ import { ICollection } from "./models/ICollection";
 
 function App() {
   const [collections, setCollections] = useState<ICollection[]>([]);
+  const [currentCollections, setCurrentCollections] = useState<ICollection[]>(
+    []
+  );
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [activeCategory, setActiveCategory] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const COLLECTIONS_PER_PAGE = 3;
 
   useEffect(() => {
     const getData = async () => {
@@ -44,6 +49,16 @@ function App() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const indexOfLastCollection = currentPage * COLLECTIONS_PER_PAGE;
+    const indexOfFirstCollection = indexOfLastCollection - COLLECTIONS_PER_PAGE;
+    const currentCollections = collections.slice(
+      indexOfFirstCollection,
+      indexOfLastCollection
+    );
+    setCurrentCollections(currentCollections);
+  }, [collections, currentPage]);
+
   return (
     <div className="App">
       <h1>Моя коллекція фотографій</h1>
@@ -58,7 +73,7 @@ function App() {
         <div>loading...</div>
       ) : (
         <div className="content">
-          {collections
+          {currentCollections
             .filter((collection) =>
               activeCategory ? collection.category === activeCategory : true
             )
@@ -71,7 +86,12 @@ function App() {
             ))}
         </div>
       )}
-      <Pagination />
+      <Pagination
+        collectionsLength={collections.length}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        collectionsPerPage={COLLECTIONS_PER_PAGE}
+      />
     </div>
   );
 }
