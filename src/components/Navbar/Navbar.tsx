@@ -1,15 +1,33 @@
 import { FC } from "react";
+import { ICategory } from "../../models/ICategory";
 import s from "./Navbar.module.scss";
 
-const Navbar: FC = () => {
+type NavbarProps = {
+  categories: ICategory[];
+  activeCategory: number;
+  setActiveCategory: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const Navbar: FC<NavbarProps> = ({
+  categories,
+  activeCategory,
+  setActiveCategory,
+}) => {
   return (
     <div className={s.top}>
       <ul className={s.tags}>
-        <li className={s.active}>Всі</li>
-        <li>Гори</li>
-        <li>Море</li>
-        <li>Архітектура</li>
-        <li>Міста</li>
+        {categories.map((category, i) => {
+          const className = activeCategory === i ? s.active : "";
+          return (
+            <li
+              key={category.name}
+              className={className}
+              onClick={() => setActiveCategory(i)}
+            >
+              {category.name}
+            </li>
+          );
+        })}
       </ul>
       <input className={s.searchInput} placeholder="Пошук по назві" />
     </div>
